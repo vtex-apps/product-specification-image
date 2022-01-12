@@ -5,6 +5,7 @@ import { useCssHandles } from 'vtex.css-handles'
 
 interface ProductSpecificationImageProps {
   specification?: string
+  group?: string
   name?: string
   maxWidth?: string | number
   maxHeight?: string | number
@@ -24,7 +25,8 @@ const CSS_HANDLES = [
 ] as const
 
 const ProductSpecificationImage: StorefrontFunctionComponent<ProductSpecificationImageProps> = (
-  { specification = "", 
+  { specification = "",
+    group = "",
     name,
     maxWidth,
     maxHeight,
@@ -38,31 +40,54 @@ const ProductSpecificationImage: StorefrontFunctionComponent<ProductSpecificatio
   
   ) => {
 
-  const  handles  = useCssHandles(CSS_HANDLES)
+  const  handles = useCssHandles(CSS_HANDLES, blockClass)
 
   const productContextValue = useProduct();
   var image=loadField();
 
 
   function loadField(){
-    var output='';
-    if(specification>=""){
-
-      var fields= productContextValue.product?.properties || false;
+    var output=[];
+    if(specification>="" && group >=""){
+      console.log("all specs");
+      console.log(productContextValue);
+      var groups= productContextValue.product?.specificationGroups || false;
       
-      if(fields){
-        console.log("fields:");
-        console.log(fields);
-        for(var i=0; i<fields.length; i++){
+      if(groups.length>0){
+        console.log("groups:");
+        console.log(groups);
+        for(var i=0; i<groups.length; i++){
+          //finding the field in the groups
+          if(groups[i].originalName != group) continue;
 
-          if(fields[i].name==specification && fields[i].values.length>0){
+          for(var j=0; j<groups[i].specifications.length; j++){
+            if(groups[i].specifications[j].originalName != specification) continue; //not ours? skip!
+
+            output=groups[i].specifications[j].values; 
+            console.log("JACKPOT!");
+            console.log(output);
+            break;
+          }
+          break;
+          /*if(fields[i].name==specification && fields[i].values.length>0){
             console.log("found field: " + specification)
             
             output=fields[i].values[0];
             console.log("found value: " + output)
             break;
+          }*/
+        }
+      }else { //we couldnt find groups, lets try to load the field individually.
+        var fields = productContextValue.product?.properties;
+        if(fields.length>0){
+          for(var i=0; i<fields.length; i++){
+            if(fields[i].name==specification){
+              return fields[i].values
+              
+            } else continue;
           }
         }
+
       }
     }
     return output;
@@ -75,13 +100,16 @@ const ProductSpecificationImage: StorefrontFunctionComponent<ProductSpecificatio
     console.log("zeh video "+video)
     console.log("Zeh Fallback "+fallbackvideo)
   }*/
-
+  function joinDOM(){
+    if(typeof image[0] == "undefined") return "";
+    else return image[0];
+  }
   function buildDom(){
-    
-    image = (typeof image == "undefined" ? "" : image);
+    let final = joinDOM();
+    final = (typeof final == "undefined" ? "" : final);
     console.log("image found for rendering:")
-    console.log(image)
-    if(image.trim()<='' ){
+    console.log(final)
+    if(final.trim()<='' ){
       console.log("no image found - hide ");
       return <div className={handles.containerEmpty} ></div>;
     }
@@ -99,7 +127,7 @@ const ProductSpecificationImage: StorefrontFunctionComponent<ProductSpecificatio
             blockClass={blockClass}
             experimentalPreventLayoutShift={experimentalPreventLayoutShift}
             preload={preload}
-            src={image}
+            src={final}
             />
         </div>
       )
