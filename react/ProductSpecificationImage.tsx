@@ -49,13 +49,13 @@ const ProductSpecificationImage: StorefrontFunctionComponent<ProductSpecificatio
   function loadField(){
     var output=[];
     if(specification>="" && group >=""){
-      console.log("all specs");
-      console.log(productContextValue);
+      //console.log("all specs");
+      //console.log(productContextValue);
       var groups= productContextValue.product?.specificationGroups || false;
       
       if(groups.length>0){
-        console.log("groups:");
-        console.log(groups);
+        //console.log("groups:");
+        //console.log(groups);
         for(var i=0; i<groups.length; i++){
           //finding the field in the groups
           if(groups[i].originalName != group) continue;
@@ -107,8 +107,8 @@ const ProductSpecificationImage: StorefrontFunctionComponent<ProductSpecificatio
   function buildDom(){
     let final = joinDOM();
     final = (typeof final == "undefined" ? "" : final);
-    console.log("image found for rendering:")
-    console.log(final)
+    //console.log("image found for rendering:")
+    //console.log(final)
     if(final.trim()<='' ){
       console.log("no image found - hide ");
       return <div className={handles.containerEmpty} ></div>;
