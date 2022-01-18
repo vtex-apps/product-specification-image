@@ -20,7 +20,7 @@ interface ProductSpecificationImageProps {
 const CSS_HANDLES = [
   
   'containerEmpty',
-  'imageontainer'
+  'imageContainer'
 ,
 ] as const
 
@@ -40,42 +40,35 @@ const ProductSpecificationImage: StorefrontFunctionComponent<ProductSpecificatio
   
   ) => {
 
-  const  handles = useCssHandles(CSS_HANDLES, blockClass)
+  const { handles }= useCssHandles(CSS_HANDLES, blockClass);
 
   const productContextValue = useProduct();
   var image=loadField();
-
+    
 
   function loadField(){
     var output=[];
     if(specification>="" && group >=""){
-      //console.log("all specs");
-      //console.log(productContextValue);
+      
       var groups= productContextValue.product?.specificationGroups || false;
       
       if(groups.length>0){
-        //console.log("groups:");
-        //console.log(groups);
+       
         for(var i=0; i<groups.length; i++){
           //finding the field in the groups
-          if(groups[i].originalName != group) continue;
-
+       
+          if(groups[i].originalName != group) {
+            continue;
+          }
+          
           for(var j=0; j<groups[i].specifications.length; j++){
             if(groups[i].specifications[j].originalName != specification) continue; //not ours? skip!
-
+            //JACKPOT
             output=groups[i].specifications[j].values; 
-            console.log("JACKPOT!");
-            console.log(output);
+
             break;
           }
           break;
-          /*if(fields[i].name==specification && fields[i].values.length>0){
-            console.log("found field: " + specification)
-            
-            output=fields[i].values[0];
-            console.log("found value: " + output)
-            break;
-          }*/
         }
       }else { //we couldnt find groups, lets try to load the field individually.
         var fields = productContextValue.product?.properties;
@@ -93,24 +86,18 @@ const ProductSpecificationImage: StorefrontFunctionComponent<ProductSpecificatio
     return output;
   }
   
-  /*function activateProductContext(){
-    console.log(productContextValue);
-    console.log(specification);
-    console.log("i got "+loadField());
-    console.log("zeh video "+video)
-    console.log("Zeh Fallback "+fallbackvideo)
-  }*/
+  
   function joinDOM(){
     if(typeof image[0] == "undefined") return "";
     else return image[0];
   }
   function buildDom(){
+
     let final = joinDOM();
     final = (typeof final == "undefined" ? "" : final);
-    //console.log("image found for rendering:")
-    //console.log(final)
+    
     if(final.trim()<='' ){
-      console.log("no image found - hide ");
+      
       return <div className={handles.containerEmpty} ></div>;
     }
     else{
