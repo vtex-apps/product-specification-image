@@ -1,10 +1,13 @@
-# VTEX Product Specification Video
+# VTEX Product Specification Image
+
+## Disclaimer: this is not an official VTEX app
+:loudspeaker:  This app is not supported by the product team. Use it on your own risk!
 
 ## Description
 
 VTEX Store Components is a collection of components that can be used to create/extend others VTEX apps.
 
-:loudspeaker: **Disclaimer:** Don't fork this project; use, contribute, or open issue with your feature request.
+
 
 ## Table of Contents
 
@@ -13,32 +16,46 @@ VTEX Store Components is a collection of components that can be used to create/e
 
 
 ## Usage
-
+Clone the app and make it yours. Replace the vendor name with the name of your account.
 To use this app, you need to import in your dependencies on `manifest.json`.
 
 ```json
   "dependencies": {
-    "vtex.product-specification-image": "0.x"
+    "VENDOR.product-specification-image": "0.x"
   }
 ```
 
-Then, you can add a component block into your app theme on your product detail page. You can use props to define both the fallback video as well as the specification name to look into for videos.
+Then, you can add a component block into your app theme on your product detail page. It is mandatory to select the specification group and specification field name where the image url is stored. 
 
 ```json
-"productvideo":{
-    "props":{
-      "specification": "trailervideo",
-      "fallbackvideo": "https://www.youtube.com/watch?v=NQ0HkV4Zp_o"
-      
+ "productimage": {
+    "props": {
+      "blockClass": "Classname",
+      "group": "Product media",
+      "specification": "Highlights_Image_4",
+
     }
-  }
+  },
 ```
+
+## Props:
+| Prop | Purpose | expected values| Default |
+| ---- | ---- | ---- |---- |
+| blockClass | defines a CSS class for the handles | string | undefined |
+| specification | the specification field name to load the image from. **Mandatory** | string | undefined |
+| group | The specification group name to look for the specification in **Mandatory** | string | undefined |
+| maxWidth | CSS rule to apply on max with. PX or percent | string | undefined |
+| maxHeight | CSS rule to apply on max height. PX or percent | string | undefined |
+| minWidth | CSS rule to apply on min width. PX or percent | string | undefined |
+| maxWidth | CSS rule to apply on max width. PX or percent | string | undefined |
+| name | the image title | string | undefined |
+
 ## CSS handles
 The following CSS handles can be used for styling:
 
 ```js
 'containerEmpty'
-'videoContainer'
+'imageContainer'
 ```
 
 
