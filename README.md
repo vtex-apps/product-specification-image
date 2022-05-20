@@ -5,7 +5,7 @@
 
 ## Description
 
-VTEX Store Components is a collection of components that can be used to create/extend others VTEX apps.
+This app allows placing images from product specification fields into the template.
 
 
 
